@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kickstand Email Signature Generator</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 32px 20px;
+    line-height: 1.5;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 24px;
+    margin: 0 0 6px 0;
+    color: #1a1a1a;
+    letter-spacing: -0.2px;
+  }
+  h1 .accent { color: #F37021; }
+  .subtitle { color: #666; font-size: 14px; margin: 0 0 0 0; }
+  h2 {
+    font-size: 16px;
+    margin: 0 0 14px 0;
+    color: #1a1a1a;
+    border-bottom: 2px solid #F37021;
+    padding-bottom: 6px;
+    display: inline-block;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    margin-top: 14px;
+  }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fafafa;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  input:focus {
+    outline: none;
+    border-color: #F37021;
+    background: #fff;
+  }
+  .hint {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .preview-wrap {
+    border: 1px dashed #ccc;
+    padding: 20px;
+    border-radius: 6px;
+    background: #fafafa;
+    margin-top: 10px;
+  }
+  .copy-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  button {
+    background: #F37021;
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: #d85d12; }
+  button.success { background: #4caf50; }
+  button.success:hover { background: #43a047; }
+  .copy-note { font-size: 13px; color: #666; }
+  ol { font-size: 14px; line-height: 1.75; padding-left: 22px; }
+  ol li { margin-bottom: 4px; }
+  .tip {
+    background: #FFF6EE;
+    border-left: 3px solid #F37021;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin: 14px 0 0 0;
+    border-radius: 4px;
+    color: #444;
+  }
+  .success-tip {
+    background: #F0F7F0;
+    border-left: 3px solid #4caf50;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin: 14px 0 0 0;
+    border-radius: 4px;
+    color: #444;
+  }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="card">
+    <h1>Kickstand <span class="accent">Signature</span> Generator</h1>
+    <p class="subtitle">Fill in the four fields below. Your signature updates live. Click Copy, then paste into Gmail.</p>
+  </div>
+
+  <div class="card">
+    <h2>Your info</h2>
+    <label for="name">Full name</label>
+    <input type="text" id="name" value="Nycole Walsh" autocomplete="off">
+
+    <label for="title">Title</label>
+    <input type="text" id="title" value="Director of Digital Services" autocomplete="off">
+
+    <label for="phone">Phone number</label>
+    <input type="tel" id="phone" value="817.584.1027" autocomplete="off">
+    <div class="hint">Any format works — <code>512.484.8060</code>, <code>(512) 484-8060</code>, <code>512-484-8060</code> all parse correctly.</div>
+
+    <label for="email">Email address</label>
+    <input type="email" id="email" value="Nycole@meetkickstand.com" autocomplete="off">
+  </div>
+
+  <div class="card">
+    <h2>Preview</h2>
+    <p class="subtitle" style="margin-bottom: 8px;">This is what will appear at the bottom of your emails.</p>
+    <div class="preview-wrap">
+      <div id="preview-display" style="font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif; color: #333333; font-size: 13px; line-height: 1.6; max-width: 520px;">
+        <img src="data:image/png;base64,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" alt="Kickstand" width="130" style="display: block; border: 0; margin-bottom: 10px;">
+        <div id="p-name" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #1a1a1a; letter-spacing: 0.5px;">NYCOLE WALSH</div>
+        <div id="p-title" style="font-family: Arial, Helvetica, sans-serif; color: #555555; margin-bottom: 10px;">Director of Digital Services</div>
+        <div>&#128172; <a id="p-phone-link" href="sms:+18175841027" style="color: #333333; text-decoration: none;"><span id="p-phone">817.584.1027</span></a> &nbsp;|&nbsp; &#128231; <a id="p-email-link" href="mailto:Nycole@meetkickstand.com" style="color: #333333; text-decoration: none;"><span id="p-email">Nycole@meetkickstand.com</span></a></div>
+        <div style="margin-top: 2px;"><a href="https://www.meetkickstand.com" style="color: #F37021; text-decoration: none; font-weight: bold;">meetkickstand.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/company/kickstand-communications-llc" style="color: #F37021; text-decoration: none; font-weight: bold;">LinkedIn</a></div>
+        <div style="border-top: 1px solid #e5e5e5; margin-top: 12px; padding-top: 10px; font-size: 12px; color: #555555;">
+          <div style="margin-bottom: 3px;"><strong style="color: #1a1a1a;">Kickstand in the news:</strong> <a href="https://www.forbes.com/sites/christinecarter/2021/08/02/meet-the-firm-giving-new-working-parents-an-instant-6000-raise/" style="color: #F37021; text-decoration: none;">Forbes</a>, <a href="https://www.businessinsider.com/how-competitive-benefits-attract-employees-family-planning-grants-wellness-stipends-2022-10" style="color: #F37021; text-decoration: none;">Business Insider</a>, <a href="https://www.adweek.com/agencies/from-cleaning-hotel-rooms-to-rooming-with-rockstars-heres-how-agencies-get-to-know-their-clients/" style="color: #F37021; text-decoration: none;">Adweek</a></div>
+          <div><strong style="color: #1a1a1a;">Recent coverage of Kickstand clients:</strong> <a href="https://www.newsweek.com/ai-software-customer-feedback-product-advantage-11937650" style="color: #F37021; text-decoration: none;">Newsweek</a>, <a href="https://venturebeat.com/security/shai-hulud-worm-172-npm-pypi-packages-valid-provenance-ci-cd-audit" style="color: #F37021; text-decoration: none;">VentureBeat</a>, <a href="https://www.forbes.com/sites/cio/2025/12/04/why-regulating-ai-agents-and-governance-go-hand-in-hand/" style="color: #F37021; text-decoration: none;">Forbes</a>, and <a href="https://www.vogue.com/article/how-ai-shopping-could-turn-fashion-advertising-on-its-head" style="color: #F37021; text-decoration: none;">Vogue</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy-row">
+      <button id="copy-btn" type="button">Copy signature</button>
+      <span class="copy-note">Then paste into Gmail (steps below).</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Install in Gmail</h2>
+    <ol>
+      <li>Click <strong>Copy signature</strong> above. (You'll see "Copied!" when it works.)</li>
+      <li>In Gmail, click the gear icon (top right) &rarr; <strong>See all settings</strong>.</li>
+      <li>Stay on the <strong>General</strong> tab and scroll down to <strong>Signature</strong>.</li>
+      <li>If you have an old Kickstand signature here, delete it first. Then click <strong>+ Create new</strong>, name it "Kickstand," click Create.</li>
+      <li>Click into the empty signature box and paste (<strong>Cmd+V</strong> on Mac, <strong>Ctrl+V</strong> on Windows).</li>
+      <li>Under <strong>Signature defaults</strong>, pick "Kickstand" for both <em>FOR NEW EMAILS USE</em> and <em>ON REPLY/FORWARD USE</em>.</li>
+      <li>Scroll to the bottom of the settings page and click <strong>Save Changes</strong>.</li>
+      <li>Send yourself a test email to confirm the Kickstand logo and all the links appear.</li>
+    </ol>
+
+    <div class="success-tip">
+      <strong>Why this one works everywhere:</strong> No embedded photo. The Kickstand logo loads from the website at send time, which keeps the signature well under Gmail's size limit. Should work on the first try in Gmail, Apple Mail, Outlook, or mobile.
+    </div>
+
+    <div class="tip">
+      <strong>If the logo shows as a broken image for some recipients:</strong> some email clients block external images by default and recipients have to click "show images." The text, links, and layout always render fine either way.
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const REAL_LOGO_URL = "https://meetkickstand.com/wp-content/uploads/2026/05/Kickstand_Logo_Dark.png";
+
+  const nameInput = document.getElementById('name');
+  const titleInput = document.getElementById('title');
+  const phoneInput = document.getElementById('phone');
+  const emailInput = document.getElementById('email');
+
+  const pName = document.getElementById('p-name');
+  const pTitle = document.getElementById('p-title');
+  const pPhone = document.getElementById('p-phone');
+  const pPhoneLink = document.getElementById('p-phone-link');
+  const pEmail = document.getElementById('p-email');
+  const pEmailLink = document.getElementById('p-email-link');
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatPhoneDisplay(raw) {
+    const digits = String(raw).replace(/\D/g, '');
+    if (digits.length === 10) {
+      return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6);
+    }
+    if (digits.length === 11 && digits[0] === '1') {
+      return digits.slice(1,4) + '.' + digits.slice(4,7) + '.' + digits.slice(7);
+    }
+    return raw; // fall back to whatever they typed
+  }
+
+  function phoneDigitsForSms(raw) {
+    const digits = String(raw).replace(/\D/g, '');
+    if (digits.length === 10) return '+1' + digits;
+    if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+    return '+' + digits;
+  }
+
+  function render() {
+    const name = (nameInput.value || '').trim();
+    const title = (titleInput.value || '').trim();
+    const phoneRaw = (phoneInput.value || '').trim();
+    const email = (emailInput.value || '').trim();
+
+    pName.textContent = name.toUpperCase();
+    pTitle.textContent = title;
+
+    const phoneDisplay = formatPhoneDisplay(phoneRaw);
+    const phoneSms = phoneDigitsForSms(phoneRaw);
+    pPhone.textContent = phoneDisplay;
+    pPhoneLink.href = 'sms:' + phoneSms;
+
+    pEmail.textContent = email;
+    pEmailLink.href = 'mailto:' + email;
+  }
+
+  function buildSignatureHtml() {
+    const name = (nameInput.value || '').trim();
+    const title = (titleInput.value || '').trim();
+    const phoneRaw = (phoneInput.value || '').trim();
+    const email = (emailInput.value || '').trim();
+
+    const nameU = escapeHtml(name.toUpperCase());
+    const titleE = escapeHtml(title);
+    const phoneDisplay = escapeHtml(formatPhoneDisplay(phoneRaw));
+    const phoneSms = escapeHtml(phoneDigitsForSms(phoneRaw));
+    const emailE = escapeHtml(email);
+
+    return (
+      '<div style="font-family: \'Poppins\', \'Helvetica Neue\', Arial, sans-serif; color: #333333; font-size: 13px; line-height: 1.6; max-width: 520px;">' +
+        '<img src="' + REAL_LOGO_URL + '" alt="Kickstand" width="130" style="display: block; border: 0; margin-bottom: 10px;">' +
+        '<div style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #1a1a1a; letter-spacing: 0.5px;">' + nameU + '</div>' +
+        '<div style="font-family: Arial, Helvetica, sans-serif; color: #555555; margin-bottom: 10px;">' + titleE + '</div>' +
+        '<div>&#128172; <a href="sms:' + phoneSms + '" style="color: #333333; text-decoration: none;">' + phoneDisplay + '</a> &nbsp;|&nbsp; &#128231; <a href="mailto:' + emailE + '" style="color: #333333; text-decoration: none;">' + emailE + '</a></div>' +
+        '<div style="margin-top: 2px;"><a href="https://www.meetkickstand.com" style="color: #F37021; text-decoration: none; font-weight: bold;">meetkickstand.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/company/kickstand-communications-llc" style="color: #F37021; text-decoration: none; font-weight: bold;">LinkedIn</a></div>' +
+        '<div style="border-top: 1px solid #e5e5e5; margin-top: 12px; padding-top: 10px; font-size: 12px; color: #555555;">' +
+          '<div style="margin-bottom: 3px;"><strong style="color: #1a1a1a;">Kickstand in the news:</strong> ' +
+            '<a href="https://www.forbes.com/sites/christinecarter/2021/08/02/meet-the-firm-giving-new-working-parents-an-instant-6000-raise/" style="color: #F37021; text-decoration: none;">Forbes</a>, ' +
+            '<a href="https://www.businessinsider.com/how-competitive-benefits-attract-employees-family-planning-grants-wellness-stipends-2022-10" style="color: #F37021; text-decoration: none;">Business Insider</a>, ' +
+            '<a href="https://www.adweek.com/agencies/from-cleaning-hotel-rooms-to-rooming-with-rockstars-heres-how-agencies-get-to-know-their-clients/" style="color: #F37021; text-decoration: none;">Adweek</a>' +
+          '</div>' +
+          '<div><strong style="color: #1a1a1a;">Recent coverage of Kickstand clients:</strong> ' +
+            '<a href="https://www.newsweek.com/ai-software-customer-feedback-product-advantage-11937650" style="color: #F37021; text-decoration: none;">Newsweek</a>, ' +
+            '<a href="https://venturebeat.com/security/shai-hulud-worm-172-npm-pypi-packages-valid-provenance-ci-cd-audit" style="color: #F37021; text-decoration: none;">VentureBeat</a>, ' +
+            '<a href="https://www.forbes.com/sites/cio/2025/12/04/why-regulating-ai-agents-and-governance-go-hand-in-hand/" style="color: #F37021; text-decoration: none;">Forbes</a>, and ' +
+            '<a href="https://www.vogue.com/article/how-ai-shopping-could-turn-fashion-advertising-on-its-head" style="color: #F37021; text-decoration: none;">Vogue</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function buildPlainText() {
+    const name = (nameInput.value || '').trim();
+    const title = (titleInput.value || '').trim();
+    const phoneDisplay = formatPhoneDisplay((phoneInput.value || '').trim());
+    const email = (emailInput.value || '').trim();
+    return [
+      name.toUpperCase(),
+      title,
+      phoneDisplay + '  |  ' + email,
+      'meetkickstand.com  |  LinkedIn',
+      '',
+      'Kickstand in the news: Forbes, Business Insider, Adweek',
+      'Recent coverage of Kickstand clients: Newsweek, VentureBeat, Forbes, and Vogue'
+    ].join('\n');
+  }
+
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.addEventListener('click', async function() {
+    const html = buildSignatureHtml();
+    const text = buildPlainText();
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        const item = new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([text], { type: 'text/plain' })
+        });
+        await navigator.clipboard.write([item]);
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(html);
+      } else {
+        // Fallback: create temp element, select, exec copy
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        tmp.style.position = 'fixed';
+        tmp.style.left = '-10000px';
+        document.body.appendChild(tmp);
+        const range = document.createRange();
+        range.selectNodeContents(tmp);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+        tmp.remove();
+      }
+      copyBtn.textContent = '✓ Copied! Now paste into Gmail';
+      copyBtn.classList.add('success');
+      setTimeout(function() {
+        copyBtn.textContent = 'Copy signature';
+        copyBtn.classList.remove('success');
+      }, 3500);
+    } catch (err) {
+      console.error('Copy failed:', err);
+      copyBtn.textContent = 'Copy failed — try again';
+      setTimeout(function() {
+        copyBtn.textContent = 'Copy signature';
+      }, 2500);
+    }
+  });
+
+  [nameInput, titleInput, phoneInput, emailInput].forEach(function(el) {
+    el.addEventListener('input', render);
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
