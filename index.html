@@ -118,6 +118,8 @@
     border-radius: 4px;
     color: #444;
   }
+  .check-row { display: flex; align-items: center; gap: 8px; margin-top: 18px; cursor: pointer; }
+  .check-row input { width: 16px; height: 16px; margin: 0; accent-color: #F37021; cursor: pointer; }
   code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
 </style>
 </head>
@@ -144,6 +146,12 @@
 
     <label for="email">Email address</label>
     <input type="email" id="email" value="Nycole@meetkickstand.com" autocomplete="off">
+
+    <label class="check-row" for="cyber-banner">
+      <input type="checkbox" id="cyber-banner">
+      <span>Add cyber banner</span>
+    </label>
+    <div class="hint">Adds the Best Cyber PR Agency award banner. It links to our cyber page.</div>
   </div>
 
   <div class="card">
@@ -156,6 +164,7 @@
         <div id="p-title" style="font-family: Arial, Helvetica, sans-serif; color: #555555; margin-bottom: 10px;">Director of Digital Services</div>
         <div>&#128172; <a id="p-phone-link" href="sms:+18175841027" style="color: #333333; text-decoration: none;"><span id="p-phone">817.584.1027</span></a> &nbsp;|&nbsp; &#128231; <a id="p-email-link" href="mailto:Nycole@meetkickstand.com" style="color: #333333; text-decoration: none;"><span id="p-email">Nycole@meetkickstand.com</span></a></div>
         <div style="margin-top: 2px;"><a href="https://www.meetkickstand.com" style="color: #F37021; text-decoration: none; font-weight: bold;">meetkickstand.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/company/kickstand-communications-llc" style="color: #F37021; text-decoration: none; font-weight: bold;">LinkedIn</a></div>
+        <div id="p-banner" style="display: none; margin-top: 12px;"><a href="https://meetkickstand.com/services/cyber/"><img src="kickstand-cyber-banner.jpg" alt="Kickstand named Best Cyber PR Agency at the 2026 Marquee Awards" width="520" height="130" style="display: block; border: 0; width: 520px; max-width: 100%; height: auto;"></a></div>
         <div style="border-top: 1px solid #e5e5e5; margin-top: 12px; padding-top: 10px; font-size: 12px; color: #555555;">
           <div style="margin-bottom: 3px;"><strong style="color: #1a1a1a;">Kickstand in the news:</strong> <a href="https://www.forbes.com/sites/christinecarter/2021/08/02/meet-the-firm-giving-new-working-parents-an-instant-6000-raise/" style="color: #F37021; text-decoration: none;">Forbes</a>, <a href="https://www.businessinsider.com/how-competitive-benefits-attract-employees-family-planning-grants-wellness-stipends-2022-10" style="color: #F37021; text-decoration: none;">Business Insider</a>, <a href="https://www.adweek.com/agencies/from-cleaning-hotel-rooms-to-rooming-with-rockstars-heres-how-agencies-get-to-know-their-clients/" style="color: #F37021; text-decoration: none;">Adweek</a></div>
           <div><strong style="color: #1a1a1a;">Recent coverage of Kickstand clients:</strong> <a href="https://www.newsweek.com/ai-software-customer-feedback-product-advantage-11937650" style="color: #F37021; text-decoration: none;">Newsweek</a>, <a href="https://venturebeat.com/security/shai-hulud-worm-172-npm-pypi-packages-valid-provenance-ci-cd-audit" style="color: #F37021; text-decoration: none;">VentureBeat</a>, <a href="https://www.forbes.com/sites/cio/2025/12/04/why-regulating-ai-agents-and-governance-go-hand-in-hand/" style="color: #F37021; text-decoration: none;">Forbes</a>, and <a href="https://www.vogue.com/article/how-ai-shopping-could-turn-fashion-advertising-on-its-head" style="color: #F37021; text-decoration: none;">Vogue</a></div>
@@ -196,6 +205,10 @@
 <script>
 (function() {
   const REAL_LOGO_URL = "https://meetkickstand.com/wp-content/uploads/2026/05/Kickstand_Logo_Dark.png";
+  const CYBER_BANNER_URL = "https://kickstandpr.github.io/signature-generator/kickstand-cyber-banner.jpg";
+  const CYBER_BANNER_LINK = "https://meetkickstand.com/services/cyber/";
+  const bannerInput = document.getElementById('cyber-banner');
+  const pBanner = document.getElementById('p-banner');
 
   const nameInput = document.getElementById('name');
   const titleInput = document.getElementById('title');
@@ -252,6 +265,8 @@
 
     pEmail.textContent = email;
     pEmailLink.href = 'mailto:' + email;
+
+    pBanner.style.display = bannerInput.checked ? 'block' : 'none';
   }
 
   function buildSignatureHtml() {
@@ -273,6 +288,9 @@
         '<div style="font-family: Arial, Helvetica, sans-serif; color: #555555; margin-bottom: 10px;">' + titleE + '</div>' +
         '<div>&#128172; <a href="sms:' + phoneSms + '" style="color: #333333; text-decoration: none;">' + phoneDisplay + '</a> &nbsp;|&nbsp; &#128231; <a href="mailto:' + emailE + '" style="color: #333333; text-decoration: none;">' + emailE + '</a></div>' +
         '<div style="margin-top: 2px;"><a href="https://www.meetkickstand.com" style="color: #F37021; text-decoration: none; font-weight: bold;">meetkickstand.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/company/kickstand-communications-llc" style="color: #F37021; text-decoration: none; font-weight: bold;">LinkedIn</a></div>' +
+        (bannerInput.checked
+          ? '<div style="margin-top: 12px;"><a href="' + CYBER_BANNER_LINK + '"><img src="' + CYBER_BANNER_URL + '" alt="Kickstand named Best Cyber PR Agency at the 2026 Marquee Awards" width="520" height="130" style="display: block; border: 0; width: 520px; max-width: 100%; height: auto;"></a></div>'
+          : '') +
         '<div style="border-top: 1px solid #e5e5e5; margin-top: 12px; padding-top: 10px; font-size: 12px; color: #555555;">' +
           '<div style="margin-bottom: 3px;"><strong style="color: #1a1a1a;">Kickstand in the news:</strong> ' +
             '<a href="https://www.forbes.com/sites/christinecarter/2021/08/02/meet-the-firm-giving-new-working-parents-an-instant-6000-raise/" style="color: #F37021; text-decoration: none;">Forbes</a>, ' +
@@ -300,10 +318,11 @@
       title,
       phoneDisplay + '  |  ' + email,
       'meetkickstand.com  |  LinkedIn',
+    ].concat(bannerInput.checked ? ['Named Best Cyber PR Agency at the 2026 Marquee Awards: ' + CYBER_BANNER_LINK] : []).concat([
       '',
       'Kickstand in the news: Forbes, Business Insider, Adweek',
       'Recent coverage of Kickstand clients: Newsweek, VentureBeat, Forbes, and Vogue'
-    ].join('\n');
+    ]).join('\n');
   }
 
   const copyBtn = document.getElementById('copy-btn');
@@ -353,6 +372,7 @@
   [nameInput, titleInput, phoneInput, emailInput].forEach(function(el) {
     el.addEventListener('input', render);
   });
+  bannerInput.addEventListener('change', render);
 
   render();
 })();
